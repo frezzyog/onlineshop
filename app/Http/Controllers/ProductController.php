@@ -13,11 +13,12 @@ class ProductController extends Controller
      */
     public function index()
     {
-        // Fetch all products that are marked as "active" from the database.
+        // Fetch a paginated list of products that are "active".
         // We also order them by the newest first.
-        $products = Product::where('is_active', true)->latest()->get();
+        // The paginate() method automatically handles which page the user is on.
+        $products = Product::where('is_active', true)->latest()->paginate(12); // <-- THE ONLY CHANGE IS HERE
 
-        // Send the products data to the view file.
+        // Send the paginated products data to the view file.
         return view('products.index', compact('products'));
     }
 

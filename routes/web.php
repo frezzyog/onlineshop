@@ -1,34 +1,18 @@
 <?php
 
-use Illuminate\Support\Facades\Route; // It's good practice to import Route
-use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CartController;
-use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\ProductController;
+use Illuminate\Support\Facades\Route;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-*/
+// ... other routes
 
-// Public pages
 Route::get('/', [ProductController::class, 'index'])->name('home');
 Route::get('/products', [ProductController::class, 'index'])->name('products.index');
-Route::get('/products/{product:slug}', [ProductController::class, 'show'])->name('products.show');
+Route::get('/products/{product}', [ProductController::class, 'show'])->name('products.show');
 
-// Shopping Cart
+// Cart Routes
 Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
-Route::post('/cart/add/{product}', [CartController::class, 'add'])->name('cart.add');
-Route::patch('/cart/update/{productId}', [CartController::class, 'update'])->name('cart.update');
-Route::delete('/cart/remove/{productId}', [CartController::class, 'remove'])->name('cart.remove');
+Route::post('/cart/{product}/add', [CartController::class, 'addToCart'])->name('cart.add');
+Route::post('/cart/{product}/remove', [CartController::class, 'removeFromCart'])->name('cart.remove');
 
-// Checkout (requires authentication)
-Route::middleware('auth')->group(function () {
-    Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index');
-    Route::post('/checkout', [CheckoutController::class, 'process'])->name('checkout.process');
-});
-
-// Admin Panel (covered in Phase 4)
-
-// This part is automatically added by Laravel Breeze for authentication routes
-//require __DIR__.'/auth.php';
+// ... other routes
